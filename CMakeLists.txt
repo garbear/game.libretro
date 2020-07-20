@@ -7,6 +7,7 @@ find_package(Kodi REQUIRED)
 find_package(TinyXML REQUIRED)
 
 include_directories(${KODI_INCLUDE_DIR}
+                    ${KODI_INCLUDE_DIR}/..
                     ${PROJECT_SOURCE_DIR}/src
                     ${TINYXML_INCLUDE_DIRS})
 
