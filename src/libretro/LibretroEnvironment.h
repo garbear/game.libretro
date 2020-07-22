@@ -17,6 +17,12 @@
 #include <memory>
 #include <string>
 
+#if defined(__GNUC__)
+#define ATTRIBUTE_HIDDEN __attribute__((visibility("hidden")))
+#else
+#define ATTRIBUTE_HIDDEN
+#endif
+
 class CGameLibRetro;
 
 struct retro_game_geometry;
@@ -26,7 +32,7 @@ namespace LIBRETRO
   class CClientBridge;
   class CLibretroDLL;
 
-  class CLibretroEnvironment
+  class ATTRIBUTE_HIDDEN CLibretroEnvironment
   {
   public:
     static CLibretroEnvironment& Get(void);
