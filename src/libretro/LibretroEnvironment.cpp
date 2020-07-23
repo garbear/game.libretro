@@ -452,10 +452,35 @@ bool CLibretroEnvironment::EnvironmentCallback(unsigned int cmd, void *data)
   case RETRO_ENVIRONMENT_SET_MEMORY_MAPS:
   {
     const retro_memory_map* typedData = reinterpret_cast<const retro_memory_map*>(data);
-    if (typedData)
+    if (typedData != nullptr)
     {
-      // Not implemented
-      return false;
+      // Translate descriptors
+      std::vector<game_memory_descriptor> descriptors;
+      for (unsigned int i = 0; i < typedData->num_descriptors; i++)
+      {
+        const retro_memory_descriptor& retroDescriptor = typedData->descriptors[i];
+
+        // Translate descriptor
+        game_memory_descriptor gameDescriptor{};
+        gameDescriptor.flags = retroDescriptor.flags;
+        gameDescriptor.ptr = retroDescriptor.ptr;
+        gameDescriptor.offset = retroDescriptor.offset;
+        gameDescriptor.start = retroDescriptor.start;
+        gameDescriptor.select = retroDescriptor.select;
+        gameDescriptor.disconnect = retroDescriptor.disconnect;
+        gameDescriptor.length = retroDescriptor.len;
+        gameDescriptor.address_space = retroDescriptor.addrspace;
+
+        descriptors.emplace_back(gameDescriptor);
+      }
+
+      // Translate memory map
+      game_memory_map memoryMap{};
+      memoryMap.descriptors = descriptors.data();
+      memoryMap.descriptor_count = descriptors.size();
+
+      // Send to the frontend
+      m_addon->SetMemoryMap(memoryMap);
     }
     break;
   }
