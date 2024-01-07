@@ -172,7 +172,7 @@ int CControllerTopology::GetPortIndex(const PortPtr &port, const std::string &po
 
   if (port->portId == portId)
   {
-    if (remainingAddress.empty())
+    if (remainingAddress.empty() || remainingAddress == "/")
     {
       // Base case
       portIndex = playerCount;
