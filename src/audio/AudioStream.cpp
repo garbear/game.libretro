@@ -25,8 +25,14 @@ void CAudioStream::Initialize(CGameLibRetro* addon)
 
 void CAudioStream::Deinitialize()
 {
-  m_stream.Close();
+  CloseStream();
   m_addon = nullptr;
+}
+
+void CAudioStream::CloseStream()
+{
+  m_singleFrameAudio.Clear();
+  m_stream.Close();
 }
 
 void CAudioStream::AddFrames_S16NE(const uint8_t* data, unsigned int size)
